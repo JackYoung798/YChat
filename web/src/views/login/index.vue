@@ -69,7 +69,7 @@ const login = async () => {
         type: 'success',
         message: '用户：' + res.data.userData.username + ' 上线',
     })
-    // router.push('/')
+    router.push('/layout')
 }
 
 </script>
@@ -98,7 +98,7 @@ const login = async () => {
             </el-form>
           </div>
           <div v-else class="form">
-            <el-form>
+            <el-form ref="form" :model="formModel" :rules="rules" size="large">
               <el-form-item prop="username">
                 <el-input class="input" v-model="formModel.username" :prefix-icon="User" placeholder="请输入账号" clearable></el-input>
               </el-form-item>
