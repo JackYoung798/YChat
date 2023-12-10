@@ -17,6 +17,14 @@ export default defineConfig({
     Components({
       resolvers: [ElementPlusResolver()],
     }),
+    [
+      "import",
+      {
+          "libraryName": "@icon-park/vue-next",
+          "libraryDirectory": "es/icons",
+          "camel2DashComponentName": false 
+      }
+    ],
   ],
   server: {
     port: 5173,

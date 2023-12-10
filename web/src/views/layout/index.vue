@@ -1,7 +1,6 @@
 <script setup>
 import { useUserStore} from '@/stores'
 import { useRouter } from 'vue-router'
-import avatarUrl from '@/assets/default.png'
 import asideMenu from '@/components/asideMenu.vue'
 const userStore = useUserStore()
 const router = useRouter()
@@ -16,7 +15,7 @@ const router = useRouter()
       <el-col :span="5" class="col">
         <router-view></router-view>
       </el-col>
-      <el-col :span="18">
+      <el-col :span="18" class="col">
 
       </el-col>
     </el-row>
@@ -30,6 +29,6 @@ const router = useRouter()
 }
 .col {
   height: 98vh;
-  border-right: 1px black solid;
+  border: 1px black solid;
 }
 </style>
