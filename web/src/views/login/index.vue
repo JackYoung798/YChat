@@ -90,7 +90,7 @@ const login = async () => {
                 <el-input class="input" v-model="formModel.username" :prefix-icon="User" placeholder="请输入账号" clearable></el-input>
               </el-form-item>
               <el-form-item prop="password">
-                <el-input class="input" v-model="formModel.password" :prefix-icon="Lock" placeholder="请输入密码" clearable></el-input>
+                <el-input class="input" v-model="formModel.password" :prefix-icon="Lock" placeholder="请输入密码" type="password" clearable></el-input>
               </el-form-item>
               <el-form-item>
                 <div @click="login" class="btn">登录</div>              
@@ -103,7 +103,7 @@ const login = async () => {
                 <el-input class="input" v-model="formModel.username" :prefix-icon="User" placeholder="请输入账号" clearable></el-input>
               </el-form-item>
               <el-form-item prop="password">
-                <el-input class="input" v-model="formModel.password" :prefix-icon="Lock" placeholder="请输入密码" clearable></el-input>
+                <el-input class="input" v-model="formModel.password" :prefix-icon="Lock" placeholder="请输入密码" type="password" clearable></el-input>
               </el-form-item>
               <el-form-item>
                 <el-button @click="register" class="btn">注册</el-button>
