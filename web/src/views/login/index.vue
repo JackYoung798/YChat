@@ -86,27 +86,33 @@ const login = async () => {
         <Transition name="el-zoom-in-center" mode="out-in">
           <div v-if="show" class="form">
             <el-form ref="form" :model="formModel" :rules="rules" size="large">
+              <el-form-item>
+                <div class="text">Login</div>
+              </el-form-item>
               <el-form-item prop="username">
-                <el-input class="input" v-model="formModel.username" :prefix-icon="User" placeholder="请输入账号" clearable></el-input>
+                <el-input v-model="formModel.username" :prefix-icon="User" placeholder="请输入账号" clearable></el-input>
               </el-form-item>
               <el-form-item prop="password">
-                <el-input class="input" v-model="formModel.password" :prefix-icon="Lock" placeholder="请输入密码" type="password" clearable></el-input>
+                <el-input v-model="formModel.password" :prefix-icon="Lock" placeholder="请输入密码" type="password" clearable></el-input>
               </el-form-item>
               <el-form-item>
-                <div @click="login" class="btn">登录</div>              
+                <div @click="login" class="btn">Log in</div>              
               </el-form-item>
             </el-form>
           </div>
           <div v-else class="form">
             <el-form ref="form" :model="formModel" :rules="rules" size="large">
+              <el-form-item>
+                <div class="text">Register</div>
+              </el-form-item>
               <el-form-item prop="username">
-                <el-input class="input" v-model="formModel.username" :prefix-icon="User" placeholder="请输入账号" clearable></el-input>
+                <el-input v-model="formModel.username" :prefix-icon="User" placeholder="请输入账号" clearable></el-input>
               </el-form-item>
               <el-form-item prop="password">
-                <el-input class="input" v-model="formModel.password" :prefix-icon="Lock" placeholder="请输入密码" type="password" clearable></el-input>
+                <el-input v-model="formModel.password" :prefix-icon="Lock" placeholder="请输入密码" type="password" clearable></el-input>
               </el-form-item>
               <el-form-item>
-                <el-button @click="register" class="btn">注册</el-button>
+                <el-button @click="register" class="btn">Sign up</el-button>
               </el-form-item>
             </el-form>
           </div>
@@ -124,7 +130,6 @@ const login = async () => {
   height: 100%;;
 }
 .col {
-  /* border: 1px black solid; */
   height: 98vh;
   display: flex;
   align-items: center;
@@ -137,7 +142,6 @@ const login = async () => {
   text-shadow: -50px -20px 80px  #1326f9, 50px 20px 80px #b70422 ;
 }
 .form {
-  /* border: 1px grey solid; */
   border-radius: 20px;
   box-shadow: 2px 2px 5px #DDDDDD,-2px -2px 5px #DDDDDD;
   width: 350px;
@@ -146,7 +150,46 @@ const login = async () => {
   align-items: center;
   justify-content: center;
 }
-.input {
+.text {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -1px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-left: 30px;
+  color: #00bfff;
+}
+.text::before {
+  width: 18px;
+  height: 18px;
+}
+.text::after {
+  width: 18px;
+  height: 18px;
+  animation: pulse 1s linear infinite;
+}
+.text::before,.text::after {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  left: 0px;
+  background-color: #00bfff;
+}
+@keyframes pulse {
+  from {
+    transform: scale(0.9);
+    opacity: 1;
+  }
+
+  to {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+.el-input {
   width: 300px;
 }
 .btn {
@@ -167,6 +210,9 @@ const login = async () => {
   transition: all .3s;
   &:hover {
     background-position: right center; 
+  }
+  &:active {
+    scale: 0.95;
   }
 }
 .sub_btn {
