@@ -1,5 +1,5 @@
 <template>
-  <div class="body-container">
+  <div class="body-content">
     <router-view v-slot="{ Component }">
       <transition name="router" mode="out-in">
         <component :is="Component" />
@@ -9,6 +9,10 @@
 </template>
 
 <style scoped>
+.body-content {
+  width: 100%;
+  height: 100%;
+}
 .router-enter-active,
 .router-leave-active {
   transition: all 0.3s ease;

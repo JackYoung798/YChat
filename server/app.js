@@ -21,6 +21,12 @@ var onlines = [
   {
     username: '公共聊天室!',
   },
+  {
+    username: '测试群1',
+  },
+  {
+    username: '测试群2',
+  },
 ]
 
 io.on('connection',socket => {

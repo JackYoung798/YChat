@@ -9,14 +9,13 @@ const router = useRouter()
 <template>
   <div class="body-content">
     <el-row>
-      <div class="aside">
+      <div :span="1" class="aside">
         <asideMenu></asideMenu>
       </div>
       <el-col :span="5" class="col">
         <router-view></router-view>
       </el-col>
       <el-col :span="18" class="col">
-
       </el-col>
     </el-row>
   </div>
@@ -29,8 +28,5 @@ const router = useRouter()
 }
 .aside {
   height: 98vh;
-}
-.col {
-  height: 100%;
 }
 </style>
