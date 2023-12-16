@@ -1,21 +1,23 @@
 <script setup>
 import { useUserStore} from '@/stores'
 import { useRouter } from 'vue-router'
-import { Config } from '@icon-park/vue-next'
+import { Config,MessageOne,Tag, AddressBook, Calendar } from '@icon-park/vue-next'
+import { SwitchButton, UserFilled} from '@element-plus/icons-vue'
 import { userExitService } from '@/api/user.js'
 import socket from "@/utils/socket.js"
 import avatarUrl from '@/assets/default.png'
+import { ref } from 'vue'
 const userStore = useUserStore()
 const router = useRouter()
 
-//左下功能栏
+// 左下功能栏
 const handleCommand = async (key) => {
   if (key === 'logout') {
-    await ElMessageBox.confirm('你确认要进行退出么', '温馨提示', {
-      type: 'warning',
-      confirmButtonText: '确认',
-      cancelButtonText: '取消'
-    })
+    // await ElMessageBox.confirm('你确认要进行退出么', '温馨提示', {
+    //   type: 'warning',
+    //   confirmButtonText: '确认',
+    //   cancelButtonText: '取消'
+    // })
     userExitService(userStore.user.username)
     userStore.removeToken()
     userStore.setUser({})
@@ -25,20 +27,37 @@ const handleCommand = async (key) => {
     socket.disconnect()
     router.push('/')
   } 
-  else if (key === 'change'){ 
-    details.value = true
-  }
+  // else if (key === 'change'){ 
+  //   details.value = true
+  // }
 }
+
+//菜单控件
+const count = ref('message')
+const active = (i) => {
+  router.push(`/${i}`)
+  count.value = i
+}
+
 </script>
 
 <template>
   <div class="body-content">
+    <!-- 头像 -->
     <div class="avatar">
       <el-avatar shape="square" :src="userStore.user.avatar || avatarUrl"/>
     </div>
-    <div class="bottom">
+    <!-- 菜单栏 -->
+    <div class="menu">
+      <div class="menu-item" :class="[count=='message'?'active':'']" @click="active('message')" ><message-one theme="outline" size="30" fill="#ffffff"/></div>
+      <div class="menu-item" :class="[count=='contacts'?'active':'']" @click="active('contacts')"><address-book theme="outline" size="30" fill="#ffffff"/></div>
+      <div class="menu-item" index="3"><calendar theme="outline" size="30" fill="#ffffff"/></div>
+      <div class="menu-item" index="4"><tag theme="outline" size="30" fill="#ffffff"/></div>
+    </div>
+    <!-- 功能 -->
+    <div @click="logout" class="bottom">
       <el-dropdown placement="top" @command="handleCommand">
-        <config theme="outline" size="30" fill="#333"/>        
+        <config theme="outline" size="30" fill="#ffffff"/>
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item command="change" :icon="UserFilled">基本资料</el-dropdown-item>
@@ -47,6 +66,7 @@ const handleCommand = async (key) => {
         </template>
       </el-dropdown>
     </div>
+
   </div>
 </template>
 
@@ -54,17 +74,45 @@ const handleCommand = async (key) => {
 .body-content {
   width: 100%;
   height: 100%;
+  background: #3F51B5;
+  border-radius: 10px;
 }
 .avatar {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 12px;
+  padding: 12px;
+  /* border: 1px red solid; */
 }
+.menu {
+  /* border: red 1px solid; */
+  /* margin-top: 16px; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .menu-item {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* border: red 1px solid; */
+    border-radius: 10px;
+    margin: 10px;
+  }
+  .menu-item:hover {
+    transform: scale(1.2);
+    background: #00BFFF;
+    transition: all .5s;
+  }
+  .active {
+  background: #00BFFF;
+  }
+}
+
 .bottom {
-  /* border: 1px black solid; */
   position: absolute;
   bottom: 20px;
-  left: 12px;
+  left: 18px;
 }
 </style>
