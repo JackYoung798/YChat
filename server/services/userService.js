@@ -10,153 +10,105 @@ const JWT_EXPIRE = 60*60*24//密钥过期时间
 
 //注册
 const reg = (req,res,next) => {
-    let { username,password } = req.body
-    findUser(username).then(user => {
-        if(user){
-            res.json({
-                code: CODE_ERROR,
-                msg: '用户已存在',
-                data: null
-            })
+  let { username,password } = req.body
+  findUser(username).then(user => {
+    if(user){
+      res.json({
+        code: CODE_ERROR,
+        msg: '用户已存在',
+        data: null
+      })
+    } else {
+      const query = `insert into user(username, password) values('${username}', '${password}')`
+      querySql(query).then(result => {
+        if(!result || result.length === 0){
+          res.json({
+            code: CODE_ERROR,
+            msg: '注册失败',
+            data: null
+          })
         } else {
-            const query = `insert into user(username, password) values('${username}', '${password}')`
-            querySql(query).then(result => {
-                if(!result || result.length === 0){
-                    res.json({
-                        code: CODE_ERROR,
-                        msg: '注册失败',
-                        data: null
-                    })
-                } else {
-                    res.json({
-                        code: CODE_SUCCESS,
-                        msg: '注册成功',
-                        data: null
-                    })
-                }
-            })
+          res.json({
+            code: CODE_SUCCESS,
+            msg: '注册成功',
+            data: null
+          })
         }
-    })
+      })
+    }
+  })
 }
 
 //登录
 const log = (req,res,next) => {
-    let { username ,password } = req.body
-    findUser(username).then(result => {
-        if(!result || result.length === 0){
-            res.json({
-                code: CODE_ERROR,
-                msg: '用户不存在',
-                data: null
-            })
+  let { username ,password } = req.body
+  findUser(username).then(result => {
+    if(!result || result.length === 0){
+      res.json({
+        code: CODE_ERROR,
+        msg: '用户不存在',
+        data: null
+      })
+    } else {
+      const query = `select * from user where username='${username}'`;
+      querySql(query).then(user => {
+        if(user[0].password != password){
+          res.json({
+            code: CODE_ERROR,
+            msg: '密码错误',
+            data: null
+          })
         } else {
-            const query = `select * from user where username='${username}'`;
-            querySql(query).then(user => {
-                if(user[0].password != password){
-                    res.json({
-                        code: CODE_ERROR,
-                        msg: '密码错误',
-                        data: null
-                    })
-                } else {
-                    if(user[0].status == 1) {
-                        res.json({
-                            code: CODE_ERROR,
-                            msg: '用户已在别处登录',
-                            data: null
-                        })
-                    } else {
-                        //登录成功，签发token      
-                        const change = `update user set status = 1 where username='${username}'`;
-                        querySql(change)          
-                        const token = jwt.sign(
-                            { username },
-                            PRIVATE_KEY,
-                            { expiresIn: JWT_EXPIRE}
-                        )
-                        const userData = {
-                            userid: user[0].userid,
-                            username: user[0].username,
-                            nickname: user[0].nickname,
-                            sign: user[0].sign,
-                            avatar: user[0].avatar,
-                            status: user[0].status
-                        }
-                        res.json({
-                            code: CODE_SUCCESS,
-                            msg: '登录成功',
-                            data: {
-                                token,
-                                userData
-                            }
-                        })
-                    }
-                }
+          if(user[0].status == 1) {
+            res.json({
+              code: CODE_ERROR,
+              msg: '用户已在别处登录',
+              data: null
             })
+          } else {
+            //登录成功，签发token      
+            const change = `update user set status = 1 where username='${username}'`;
+            querySql(change)          
+            const token = jwt.sign(
+              { username },
+              PRIVATE_KEY,
+              { expiresIn: JWT_EXPIRE}
+            )
+            const userData = {
+              userid: user[0].userid,
+              username: user[0].username,
+              nickname: user[0].nickname,
+              sign: user[0].sign,
+              avatar: user[0].avatar,
+              status: user[0].status
+            }
+            res.json({
+              code: CODE_SUCCESS,
+              msg: '登录成功',
+              data: {
+                token,
+                userData
+              }
+            })
+          }
         }
-    })
+      })
+    }
+  })
 }
 
 //退出登录
 const exit = (req,res,next) => {
-    let { username } = req.body
-    query = `update user set status = 0 where username='${username}'`
-    querySql(query).then(
-        res.json({
-            code: CODE_SUCCESS,
-            msg: null,
-            data: null
-        })
-    )
+  let { userid } = req.body
+  query = `update user set status = 0 where userid='${userid}'`
+  querySql(query).then(
+    res.json({
+      code: CODE_SUCCESS,
+      msg: null,
+      data: null
+    })
+  )
 }
-
-//登录
-// const log = (req,res,next) => {
-//     let { username,password } = req.body
-//     const query = `select * from user where username='${username}' and password='${password}'`;
-//     querySql(query).then(user => {
-//         if(!user || user.length === 0){
-//             res.json({
-//                 code: CODE_ERROR,
-//                 msg: '用户名或密码错误',
-//                 data: null
-//             })
-//         } else {
-//             if(user[0].status == 1) {
-//                 res.json({
-//                     code: CODE_ERROR,
-//                     msg: '用户已在别处登录',
-//                     data: null
-//                 })
-//             } else {
-//                 //登录成功，签发token      
-//                 console.log(user[0].status);
-//                 const change = `update user set status = NOT status where username='${username}'`;
-//                 querySql(change)          
-//                 const token = jwt.sign(
-//                     { username },
-//                     PRIVATE_KEY,
-//                     { expiresIn: JWT_EXPIRE}
-//                 )
-//                 const userData = {
-//                     userid: user[0].userid,
-//                     username: user[0].username,
-//                     nickname: user[0].nickname,
-//                     sign: user[0].sign,
-//                     avatar: user[0].avatar,
-//                 }
-//                 res.json({
-//                     code: CODE_SUCCESS,
-//                     msg: '登录成功',
-//                     data: {
-//                         token,
-//                         userData
-//                     }
-//                 })
-//             }
-//         }
-//     })
-// }
 
 //修改资料
 const update = ( req,res,next ) => {

@@ -35,8 +35,9 @@ io.on('connection',socket => {
     socket.name = userData.username
     const user = {
       username: userData.username,
+      userid: userData.userid,
       avatar: userData.avatar,
-      socketId: socket.id
+      socketId: socket.id,
     }
     onlines.push(user)
     console.log(onlines.length);

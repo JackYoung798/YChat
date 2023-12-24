@@ -13,12 +13,16 @@ const chat = (item) => {
     activeName.value = item
     userStore.setActiveUser(item)
 }
+
 </script>
 
 <template>
   <div class="body-content">
     <!-- 标题 -->
-    <div class="title">Messages</div>
+    <div class="title">
+      <div class="loader"></div>
+      <div class="msg">Message</div>
+    </div>
     <!-- 消息列表 -->
     <div class='box'>
         <div class="item" :class="item == activeName?'active':''" v-for="item in userStore.userList" @click="chat(item)" >
@@ -35,45 +39,28 @@ const chat = (item) => {
   height: 100%;
 }
 .title {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  margin: 5px;
+  .loader {
+  width: 16px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #3f51b5;
+  box-shadow: 0 0 0 0 #3f51b5;
+  animation: l1 1s infinite;
+  }
+  .msg {
   font-size: 16px;
   font-weight: 600;
   letter-spacing: -1px;
-  position: relative;
-  display: flex;
-  align-items: center;
-  margin: 5px;
-  padding: 5px;
-  padding-left: 20px;
+  padding-left: 10px;
   color: #3f51b5;
-}
-.title::before {
-  width: 18px;
-  height: 18px;
-}
-.title::after {
-  width: 18px;
-  height: 18px;
-  animation: pulse 1s linear infinite;
-}
-.title::before,.title::after {
-  position: absolute;
-  content: "";
-  height: 16px;
-  width: 16px;
-  border-radius: 50%;
-  left: 0px;
-  background-color: #3f51b5;
-}
-@keyframes pulse {
-  from {
-    transform: scale(0.9);
-    opacity: 1;
   }
-
-  to {
-    transform: scale(1.8);
-    opacity: 0;
-  }
+}
+@keyframes l1 {
+    100% {box-shadow: 0 0 0 6px #0000}
 }
 .box {
   height: 680px;

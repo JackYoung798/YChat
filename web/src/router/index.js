@@ -1,8 +1,10 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import { useUserStore } from '@/stores'
+import msg from '@/components/subcomponents/message.vue'
+import chatBox from '@/components/chatBox.vue'
 
 const router = createRouter({
-    history: createWebHistory(import.meta.env.BASE_URL),
+    history: createWebHashHistory(),
     routes: [
         { path: '/',component: () => import('@/views/login/index.vue')},
         { 
@@ -12,11 +14,18 @@ const router = createRouter({
           children: [
             {
               path: '/message',
-              component: () => import('@/components/subcomponents/message.vue'),
+              components: {
+                default: msg,
+                right: chatBox
+              }
             },
             {
               path: '/contacts',
               component: () => import('@/components/subcomponents/contacts.vue'),
+            },
+            {
+              path: '/part3',
+              component: () => import('@/components/subcomponents/part3.vue'),
             }
           ]
         }

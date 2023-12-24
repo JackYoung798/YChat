@@ -1,13 +1,14 @@
 <script setup>
-import { useUserStore} from '@/stores'
+import { useUserStore, useChatStore } from '@/stores'
 import { useRouter } from 'vue-router'
-import { Config,MessageOne,Tag, AddressBook, Calendar } from '@icon-park/vue-next'
+import { Config,MessageOne,Tag, AddressBook } from '@icon-park/vue-next'
 import { SwitchButton, UserFilled} from '@element-plus/icons-vue'
 import { userExitService } from '@/api/user.js'
 import socket from "@/utils/socket.js"
 import avatarUrl from '@/assets/default.png'
 import { ref } from 'vue'
 const userStore = useUserStore()
+const chatStore = useChatStore()
 const router = useRouter()
 
 // 左下功能栏
@@ -18,12 +19,12 @@ const handleCommand = async (key) => {
     //   confirmButtonText: '确认',
     //   cancelButtonText: '取消'
     // })
-    userExitService(userStore.user.username)
+    userExitService(userStore.user.userid)
     userStore.removeToken()
     userStore.setUser({})
     userStore.setUserList([])
     userStore.setActiveUser({})
-    // chatStore.reset()
+    chatStore.reset()
     socket.disconnect()
     router.push('/')
   } 
@@ -44,15 +45,24 @@ const active = (i) => {
 <template>
   <div class="body-content">
     <!-- 头像 -->
-    <div class="avatar">
-      <el-avatar shape="square" :src="userStore.user.avatar || avatarUrl"/>
-    </div>
+    <el-popover placement="right-end">
+      <template #reference>
+        <div class="avatar">
+          <el-avatar shape="square" :src="userStore.user.avatar || avatarUrl"/>
+        </div>
+      </template>
+      <el-form>
+        <el-form-item>
+          {{ userStore.user.username }}
+        </el-form-item>
+      </el-form>
+    </el-popover>
+
     <!-- 菜单栏 -->
     <div class="menu">
       <div class="menu-item" :class="[count=='message'?'active':'']" @click="active('message')" ><message-one theme="outline" size="30" fill="#ffffff"/></div>
       <div class="menu-item" :class="[count=='contacts'?'active':'']" @click="active('contacts')"><address-book theme="outline" size="30" fill="#ffffff"/></div>
-      <div class="menu-item" index="3"><calendar theme="outline" size="30" fill="#ffffff"/></div>
-      <div class="menu-item" index="4"><tag theme="outline" size="30" fill="#ffffff"/></div>
+      <div class="menu-item" :class="[count=='part3'?'active':'']" @click="active('part3')"><Tag theme="outline" size="30" fill="#ffffff"/></div>
     </div>
     <!-- 功能 -->
     <div @click="logout" class="bottom">
@@ -66,13 +76,12 @@ const active = (i) => {
         </template>
       </el-dropdown>
     </div>
-
   </div>
 </template>
 
 <style scoped>
 .body-content {
-  width: 100%;
+  /* width: 100%; */
   height: 100%;
   background: #3F51B5;
   border-radius: 10px;
@@ -82,11 +91,8 @@ const active = (i) => {
   align-items: center;
   justify-content: center;
   padding: 12px;
-  /* border: 1px red solid; */
 }
 .menu {
-  /* border: red 1px solid; */
-  /* margin-top: 16px; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -96,7 +102,6 @@ const active = (i) => {
     display: flex;
     align-items: center;
     justify-content: center;
-    /* border: red 1px solid; */
     border-radius: 10px;
     margin: 10px;
   }
