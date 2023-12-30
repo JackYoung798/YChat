@@ -35,8 +35,8 @@ const chat = (item) => {
 
 <style scoped>
 .body-content {
-  width: 100%;
-  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 .title {
   display: flex;

@@ -81,10 +81,10 @@ const active = (i) => {
 
 <style scoped>
 .body-content {
-  /* width: 100%; */
-  height: 100%;
   background: #3F51B5;
   border-radius: 10px;
+  display: flex;
+  flex-direction: column;
 }
 .avatar {
   display: flex;
@@ -117,7 +117,7 @@ const active = (i) => {
 
 .bottom {
   position: absolute;
-  bottom: 20px;
-  left: 18px;
+  bottom: 25px;
+  left: 26px;
 }
 </style>

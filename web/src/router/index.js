@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { useUserStore } from '@/stores'
-import msg from '@/components/subcomponents/message.vue'
-import chatBox from '@/components/chatBox.vue'
+import message from '@/components/Message/message.vue'
+import chatBox from '@/components/Message/chatBox.vue'
 
 const router = createRouter({
     history: createWebHashHistory(),
@@ -15,17 +15,17 @@ const router = createRouter({
             {
               path: '/message',
               components: {
-                default: msg,
+                default: message,
                 right: chatBox
               }
             },
             {
               path: '/contacts',
-              component: () => import('@/components/subcomponents/contacts.vue'),
+              component: () => import('@/components/contacts.vue'),
             },
             {
               path: '/part3',
-              component: () => import('@/components/subcomponents/part3.vue'),
+              component: () => import('@/components/part3.vue'),
             }
           ]
         }

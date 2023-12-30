@@ -8,29 +8,36 @@ const router = useRouter()
 
 <template>
   <div class="body-content">
-    <el-row>
-      <el-col :span="1" class="col">
-        <asideMenu></asideMenu>
-      </el-col>
-      <el-col :span="5" class="col">
-        <router-view></router-view>
-      </el-col>
-      <el-col :span="18" class="col">
-        <router-view name="right"></router-view>
-      </el-col>
-    </el-row>
+    <div class="aside">
+      <asideMenu></asideMenu>
+    </div>
+    <div class="left">
+      <router-view></router-view>
+    </div>
+    <div class="right">
+      <router-view name="right"></router-view>
+    </div>
   </div>
 </template>
 
 <style scoped>
+/* body {
+  margin: 0;
+  widows: 100vw;
+  height: 100vh;
+} */
 .body-content {
-  width: 100%;
-  height: 100%;
+  height: 98vh;
+  display: flex;
 }
 .aside {
-  height: 98vh;
+  width: 70px;
 }
-.col {
-  height: 98vh;
+.left {
+  width: 20vw;
+  min-width: 200px;
+}
+.right {
+  width: 80vw;
 }
 </style>

@@ -1,17 +1,18 @@
 <template>
-  <div class="body-content">
+  <!-- <div class="body-content"> -->
     <router-view v-slot="{ Component }">
       <transition name="router" mode="out-in">
         <component :is="Component" />
       </transition>
     </router-view>  
-  </div>
+  <!-- </div> -->
 </template>
 
 <style scoped>
-.body-content {
-  width: 100%;
-  height: 100%;
+body {
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
 }
 .router-enter-active,
 .router-leave-active {
