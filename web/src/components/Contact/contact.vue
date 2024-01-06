@@ -1,19 +1,16 @@
 <script setup>
 import { useUserStore } from '@/stores'
-import { useRouter } from 'vue-router'
-import socket from "@/utils/socket.js"
-import avatar from '@/assets/default.png'
 import { ref } from 'vue';
+import avatar from '@/assets/default.png'
 const userStore = useUserStore()
-const router = useRouter()
+
+const search = ref('')
 
 const activeName = ref(0)
 const chat = (item) => {
-    console.log(item);
     activeName.value = item
-    userStore.setActiveUser(item)
+    userStore.setActiveFriend(item)
 }
-
 </script>
 
 <template>
@@ -21,14 +18,18 @@ const chat = (item) => {
     <!-- 标题 -->
     <div class="title">
       <div class="loader"></div>
-      <div class="msg">Message</div>
+      <div class="msg">Contact</div>
     </div>
-    <!-- 消息列表 -->
+    <!-- 搜索 -->
+    <div>
+      <input v-model="search"/> 
+    </div>
+    <!-- 好友列表 -->
     <div class='box'>
-        <div class="item" :class="activeName == item?'active':''" v-for="item in userStore.userList" @click="chat(item)" >
-            <el-avatar shape="circle" :src="item.avatar || avatar"/>
-            <div class="name">{{ item.username }}</div>
-        </div>
+      <div class="item" :class="item == activeName?'active':''" v-for="item in userStore.friendList" @click="chat(item)" >
+        <el-avatar shape="circle" :src="item.avatar || avatar"/>
+        <div class="name">{{ item.username }}</div>
+      </div>
     </div>
   </div>
 </template>
@@ -62,8 +63,11 @@ const chat = (item) => {
 @keyframes l1 {
     100% {box-shadow: 0 0 0 6px #0000}
 }
+.el-input {
+  margin: 0 5px;
+}
 .box {
-  height: 90vh;
+  height: 680px;
   overflow: auto;
 }
 ::-webkit-scrollba {

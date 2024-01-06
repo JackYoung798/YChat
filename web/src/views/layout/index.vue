@@ -34,7 +34,7 @@ const router = useRouter()
   width: 70px;
 }
 .left {
-  width: 20vw;
+  width: 22vw;
   min-width: 200px;
 }
 .right {

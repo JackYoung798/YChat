@@ -6,6 +6,9 @@ export const userRegService = ({ username, password }) =>
 //登录
 export const userLogService = ({ username, password }) =>
   request.post('/user/log', { username, password })
+//获取用户列表
+export const userGetFriendService = userid =>
+  request.post('/user/getFriend', { userid })
 //退出登录
 export const userExitService = userid => 
   request.post('/user/exit',  { userid })

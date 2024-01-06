@@ -1,7 +1,7 @@
 <script setup>
 import { useUserStore,useChatStore } from '@/stores'
 import { Promotion } from '@element-plus/icons-vue';
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import avatarUrl from '@/assets/default.png'
 import socket from "@/utils/socket.js"
 const userStore = useUserStore()
@@ -116,7 +116,7 @@ ul {
     align-items: center;
 }
 .receive .content .msg {
-    background-color: #95ec69;
+    background-color: rgb(240,245,245);
     margin-left: 5px;
 }
 .send .content{
@@ -124,7 +124,7 @@ ul {
     flex-direction: row-reverse;
 }
 .send .content .msg {
-    background: rgb(240,245,245);
+    background: #95ec69;
     margin-right: 5px;
 
 }

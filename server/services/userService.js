@@ -80,7 +80,7 @@ const log = (req,res,next) => {
               nickname: user[0].nickname,
               sign: user[0].sign,
               avatar: user[0].avatar,
-              status: user[0].status
+              // status: user[0].status
             }
             res.json({
               code: CODE_SUCCESS,
@@ -94,6 +94,19 @@ const log = (req,res,next) => {
         }
       })
     }
+  })
+} 
+
+//获取好友列表
+const getFriend = ( req,res,next ) => {
+  let { userid } = req.body
+  query = `select avatar,username,sign,status,userid from user where userid in (select user2id from friend where user1id = '${userid}')`
+  querySql(query).then(data => {
+    res.json({
+      code: CODE_SUCCESS,
+      msg: null,
+      data: data
+    })
   })
 }
 
@@ -158,5 +171,6 @@ module.exports = {
     log,
     exit,
     update,
-    avatar
+    avatar,
+    getFriend
 }

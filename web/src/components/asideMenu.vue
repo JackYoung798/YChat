@@ -20,15 +20,16 @@ const handleCommand = async (key) => {
     //   cancelButtonText: '取消'
     // })
     userExitService(userStore.user.userid)
-    userStore.removeToken()
+    userStore.setToken('')
     userStore.setUser({})
     userStore.setUserList([])
+    userStore.setFriendList([])
     userStore.setActiveUser({})
     chatStore.reset()
     socket.disconnect()
     router.push('/')
   } 
-  // else if (key === 'change'){ 
+  // else if (key === 'change'){ s
   //   details.value = true
   // }
 }

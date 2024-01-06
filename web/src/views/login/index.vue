@@ -2,7 +2,7 @@
 import { ref,Transition,watch } from 'vue';
 import { User, Lock, ArrowRightBold, ArrowLeftBold } from '@element-plus/icons-vue'
 import { ElNotification } from 'element-plus'
-import { userLogService,userRegService } from '@/api/user.js'
+import { userLogService,userRegService,userGetFriendService } from '@/api/user.js'
 import { useUserStore } from '@/stores'
 import { useRouter } from 'vue-router'
 import socket from "@/utils/socket.js"
@@ -33,7 +33,7 @@ const formModel = ref({
 const rules = {
   username: [
     { required: true, message: '请输入用户名', trigger: 'change' },
-    { min: 5,max: 11,message: '用户名必须是 5-11位 的字符',trigger: 'change'}
+    { min: 1,max: 11,message: '用户名必须是 5-11位 的字符',trigger: 'change'}
   ],
   password: [
     { required: true, message: '请输入密码', trigger: 'change' },
@@ -58,6 +58,8 @@ const login = async () => {
     const res = await userLogService(formModel.value)
     userStore.setToken(res.data.token)
     userStore.setUser(res.data.userData)
+    const res2 = await userGetFriendService(userStore.user.userid)
+    userStore.setFriendList(res2.data)
     socket.connect()
     socket.emit('login',res.data.userData)
     socket.on('online',(data) => {
