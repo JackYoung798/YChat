@@ -1,19 +1,20 @@
 <script setup>
-import { useUserStore,useChatStore } from '@/stores'
+import { useUserStore,useChatStore,useFuntionStore } from '@/stores'
 import { Promotion } from '@element-plus/icons-vue';
 import { ref } from 'vue';
 import avatarUrl from '@/assets/default.png'
 import socket from "@/utils/socket.js"
 const userStore = useUserStore()
 const chatStore = useChatStore()
+const funtionStore = useFuntionStore()
 
 const msg = ref('')
 const send = () => {
   // if(!userStore.activeUser)
   let data = {
-    socketId: userStore.activeUser.socketId,
+    socketId: funtionStore.activemessage.socketId,
     from: userStore.user.userid,
-    to: userStore.activeUser.userid,
+    to: funtionStore.activeMessage.userid,
     msg: msg.value
   }
   socket.emit('sendMsg', data)
@@ -32,21 +33,21 @@ socket.on('receiveMsg', data => {
 </script>
 
 <template>
-  <div v-if="Object.keys(userStore.activeUser).length > 0">
+  <div v-if="Object.keys(funtionStore.activeMessage).length > 0">
     <header>
-      <div class="title">{{ userStore.activeUser.username || '选择对话开始聊天！'}}</div>
+      <div class="title">{{ funtionStore.activeMessage.username || '选择对话开始聊天！'}}</div>
     </header>
 
     <main>
       <ul>
         <li v-for="item in chatStore.chatMsgList.filter(item => item.from == userStore.activeUser.userid || item.to == userStore.activeUser.userid)">
-          <div v-if="item.from == userStore.activeUser.userid" class="receive">
+          <div v-if="item.from == funtionStore.activeMessage.userid" class="receive">
             <div class="content">
               <div><el-avatar shape="square" :size="32" :src="avatarUrl"/></div>
               <div class="msg">{{ item.msg }}</div>
             </div>
           </div>
-          <div v-if="item.to == userStore.activeUser.userid" class="send">
+          <div v-if="item.to == funtionStore.activeMessage.userid" class="send">
             <div class="content">
               <div><el-avatar shape="square" :size="32" :src="avatarUrl"/></div>
               <div class="msg">{{ item.msg }}</div>

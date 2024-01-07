@@ -1,16 +1,21 @@
 <script setup>
-import { useUserStore } from '@/stores'
+import { useUserStore,useFuntionStore } from '@/stores'
 import { ref } from 'vue';
+import { searchContactService } from '@/api/funtion.js'
 import avatar from '@/assets/default.png'
 const userStore = useUserStore()
+const funtionStore = useFuntionStore()
 
-const search = ref('')
-
-const activeName = ref(0)
-const chat = (item) => {
-    activeName.value = item
-    userStore.setActiveFriend(item)
+const input = ref('')
+const search = async () => {
+  const user = await searchContactService(input.value)
+  funtionStore.setSearch(user.data)
 }
+
+const active = (item) => {
+    funtionStore.setActiveContact(item)
+}
+
 </script>
 
 <template>
@@ -22,11 +27,20 @@ const chat = (item) => {
     </div>
     <!-- 搜索 -->
     <div>
-      <input v-model="search"/> 
+      <input class="input" v-model="input"/> 
+      <button @click="search">搜索</button>
     </div>
+    <!-- <div v-if="funtionStore.search">
+      <div>查找结果</div>
+      <div class="item">
+        <el-avatar shape="circle" :src="funtionStore.search.avatar || avatar"/>
+        <div class="name">{{ funtionStore.search.username }}</div>
+      </div>
+    </div> -->
     <!-- 好友列表 -->
+    <div>好友列表</div>
     <div class='box'>
-      <div class="item" :class="item == activeName?'active':''" v-for="item in userStore.friendList" @click="chat(item)" >
+      <div :class="funtionStore.activeContact == item?'active item':'item'" v-for="item in funtionStore.contactList" @click="active(item)" >
         <el-avatar shape="circle" :src="item.avatar || avatar"/>
         <div class="name">{{ item.username }}</div>
       </div>
@@ -63,11 +77,12 @@ const chat = (item) => {
 @keyframes l1 {
     100% {box-shadow: 0 0 0 6px #0000}
 }
-.el-input {
-  margin: 0 5px;
+.input {
+  margin: 10px;
+
 }
 .box {
-  height: 680px;
+  height: 600px;
   overflow: auto;
 }
 ::-webkit-scrollba {
@@ -76,7 +91,7 @@ const chat = (item) => {
 .item {
   height: 72px;
   border-bottom: 1px #f1f1f1 solid;
-  border-left: 2px #ffffff solid;
+  border-radius: 20px;
   padding-left: 10px;
   display: flex;
   align-items: center;
@@ -85,11 +100,9 @@ const chat = (item) => {
   }
 }
 .item:hover {
-  border-left: 2px #dd0025 solid;
-  background: linear-gradient(to right ,#ffbfab 0% ,#ffffff 100%);
+  background: #dbf4ff;
 }
 .active {
-  border-left: 2px #dd0025 solid;
-  background: linear-gradient(to right ,#ffbfab 0% ,#ffffff 100%);
+  background: #dbf4ff;
 }
 </style>

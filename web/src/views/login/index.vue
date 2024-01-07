@@ -2,11 +2,13 @@
 import { ref,Transition,watch } from 'vue';
 import { User, Lock, ArrowRightBold, ArrowLeftBold } from '@element-plus/icons-vue'
 import { ElNotification } from 'element-plus'
-import { userLogService,userRegService,userGetFriendService } from '@/api/user.js'
-import { useUserStore } from '@/stores'
+import { userLogService,userRegService } from '@/api/user.js'
+import { contactListService } from '@/api/funtion.js'
+import { useUserStore,useFuntionStore } from '@/stores'
 import { useRouter } from 'vue-router'
 import socket from "@/utils/socket.js"
 const userStore = useUserStore()
+const funtionStore = useFuntionStore()
 const router = useRouter()
 
 //表单控件
@@ -55,21 +57,26 @@ const register = async () => {
 //登录
 const login = async () => {
     await form.value.validate()
-    const res = await userLogService(formModel.value)
-    userStore.setToken(res.data.token)
-    userStore.setUser(res.data.userData)
-    const res2 = await userGetFriendService(userStore.user.userid)
-    userStore.setFriendList(res2.data)
+    //获取用户信息
+    const user = await userLogService(formModel.value)
+    userStore.setToken(user.data.token)
+    userStore.setUser(user.data.userData)
+    //菜单控件初始化
+    funtionStore.setOption('message')
+    //获取通讯录列表
+    const contact = await contactListService(userStore.user.userid)
+    funtionStore.setContactList(contact.data)
+    //socket连接
     socket.connect()
-    socket.emit('login',res.data.userData)
+    socket.emit('login',user.data.userData)
     socket.on('online',(data) => {
         const res = data.filter(item => item.username != userStore.user.username)
-        userStore.setUserList(res)
+        funtionStore.setMessageList(res)
     })
-    ElMessage.success(res.msg)
+    ElMessage.success(user.msg)
     ElNotification({
         type: 'success',
-        message: '用户：' + res.data.userData.username + ' 上线',
+        message: '用户：' + user.data.userData.username + ' 上线',
     })
     router.push('/layout')
 }

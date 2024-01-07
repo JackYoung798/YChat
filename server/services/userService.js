@@ -97,19 +97,6 @@ const log = (req,res,next) => {
   })
 } 
 
-//获取好友列表
-const getFriend = ( req,res,next ) => {
-  let { userid } = req.body
-  query = `select avatar,username,sign,status,userid from user where userid in (select user2id from friend where user1id = '${userid}')`
-  querySql(query).then(data => {
-    res.json({
-      code: CODE_SUCCESS,
-      msg: null,
-      data: data
-    })
-  })
-}
-
 //退出登录
 const exit = (req,res,next) => {
   let { userid } = req.body
@@ -172,5 +159,4 @@ module.exports = {
     exit,
     update,
     avatar,
-    getFriend
 }

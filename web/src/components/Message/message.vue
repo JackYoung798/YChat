@@ -1,17 +1,15 @@
 <script setup>
-import { useUserStore } from '@/stores'
+import { useUserStore, useFuntionStore } from '@/stores'
 import { useRouter } from 'vue-router'
 import socket from "@/utils/socket.js"
 import avatar from '@/assets/default.png'
 import { ref } from 'vue';
 const userStore = useUserStore()
+const funtionStore = useFuntionStore()
 const router = useRouter()
 
-const activeName = ref(0)
-const chat = (item) => {
-    console.log(item);
-    activeName.value = item
-    userStore.setActiveUser(item)
+const active = (item) => {
+    funtionStore.setActiveMessage(item)
 }
 
 </script>
@@ -25,7 +23,7 @@ const chat = (item) => {
     </div>
     <!-- 消息列表 -->
     <div class='box'>
-        <div class="item" :class="activeName == item?'active':''" v-for="item in userStore.userList" @click="chat(item)" >
+        <div class="item" :class="funtionStore.activeMessage == item?'active':''" v-for="item in funtionStore.messageList" @click="active(item)" >
             <el-avatar shape="circle" :src="item.avatar || avatar"/>
             <div class="name">{{ item.username }}</div>
         </div>
@@ -72,7 +70,7 @@ const chat = (item) => {
 .item {
   height: 72px;
   border-bottom: 1px #f1f1f1 solid;
-  border-left: 2px #ffffff solid;
+  border-radius: 20px;
   padding-left: 10px;
   display: flex;
   align-items: center;
@@ -81,11 +79,9 @@ const chat = (item) => {
   }
 }
 .item:hover {
-  border-left: 2px #dd0025 solid;
-  background: linear-gradient(to right ,#ffbfab 0% ,#ffffff 100%);
+  background: #dbf4ff;
 }
 .active {
-  border-left: 2px #dd0025 solid;
-  background: linear-gradient(to right ,#ffbfab 0% ,#ffffff 100%);
+  background: #dbf4ff;
 }
 </style>

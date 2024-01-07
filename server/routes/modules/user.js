@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const service = require('../services/userService');
+const service = require('../../services/userService');
 
 //  用户注册
 router.post('/reg', service.reg);
@@ -12,7 +12,5 @@ router.post('/exit',service.exit)
 router.post('/update', service.update)
 //  头像修改
 router.post('/avatar', service.avatar)
-//  获取好友列表
-router.post('/getFriend', service.getFriend)
 
 module.exports = router;
