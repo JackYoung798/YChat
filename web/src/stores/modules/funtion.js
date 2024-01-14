@@ -10,6 +10,7 @@ export const useFuntionStore = defineStore(
     const activeMessage = ref({})
     const activeContact = ref({})
     const search = ref({})
+    const isFriend = ref()
     const setOption = (v) => {
       option.value = v
     }
@@ -28,7 +29,18 @@ export const useFuntionStore = defineStore(
     const setSearch = (obj) => {
       search.value = obj
     }
-
+    const setIsfriend = (v) => {
+      isFriend.value = v
+    }
+    const reset = () => {
+      option.value = '',
+      messageList.value = []
+      contactList.value = []
+      activeMessage.value = {}
+      activeContact.value = {}
+      search.value = null
+      isFriend.value = 0
+    }
     return {
       option,
       messageList,
@@ -36,12 +48,15 @@ export const useFuntionStore = defineStore(
       activeMessage,
       activeContact,
       search,
+      isFriend,
       setOption,
       setMessageList,
       setContactList,
       setActiveMessage,
       setActiveContact,
-      setSearch
+      setSearch,
+      setIsfriend,
+      reset
     }
   },
   {

@@ -4,7 +4,6 @@ import { useRouter } from 'vue-router'
 import { Config,MessageOne,Tag, AddressBook } from '@icon-park/vue-next'
 import { SwitchButton, UserFilled} from '@element-plus/icons-vue'
 import { userExitService } from '@/api/user.js'
-import { contactListService } from '@/api/funtion.js'
 import socket from "@/utils/socket.js"
 import avatarUrl from '@/assets/default.png'
 const userStore = useUserStore()
@@ -21,13 +20,9 @@ const handleCommand = async (key) => {
     //   cancelButtonText: '取消'
     // })
     userExitService(userStore.user.userid)
-    userStore.setToken('')
-    userStore.setUser({})
-    funtionStore.setMessageList([])
-    funtionStore.setContactList([])
-    funtionStore.setActiveMessage({})
-    funtionStore.setActiveContact({})
-    chatStore.reset()
+    userStore.reset()
+    funtionStore.reset()
+    // chatStore.reset()
     socket.disconnect()
     router.push('/')
   } 
@@ -40,10 +35,10 @@ const handleCommand = async (key) => {
 const active = async (i) => {
   router.push(`/${i}`)
   funtionStore.setOption(i)
-  if(i == 'contact') {
+  // if(i == 'contact') {
     // const contact = await contactListService(userStore.user.userid)
     // funtionStore.setContactList(contact.data)
-  }
+  // }
 }
 
 </script>

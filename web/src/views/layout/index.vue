@@ -21,11 +21,6 @@ const router = useRouter()
 </template>
 
 <style scoped>
-/* body {
-  margin: 0;
-  widows: 100vw;
-  height: 100vh;
-} */
 .body-content {
   height: 98vh;
   display: flex;
@@ -36,6 +31,7 @@ const router = useRouter()
 .left {
   width: 22vw;
   min-width: 200px;
+  border-right: 1px #f1f1f1 solid;
 }
 .right {
   width: 80vw;

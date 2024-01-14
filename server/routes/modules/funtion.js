@@ -6,5 +6,7 @@ const service = require('../../services/funtionService');
 router.post('/getContact', service.getContact)
 //  查找好友
 router.post('/searchContact', service.searchContact)
+//  判断是否为好友
+router.post('/isFriend',service.isFriend)
 
 module.exports = router;

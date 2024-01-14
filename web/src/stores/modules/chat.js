@@ -5,7 +5,6 @@ export const useChatStore = defineStore(
   'useChatStore',
   () => {
     const chatMsgList = ref([])
-
     const setMsgList = (data) => {
       chatMsgList.value.push(data)
     }

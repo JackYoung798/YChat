@@ -21,6 +21,7 @@ const getContact = ( req,res,next ) => {
   })
 }
 
+//搜索好友
 const searchContact = ( req,res,next ) => {
   let { username } = req.body
   findUser(username).then(user => {
@@ -32,12 +33,33 @@ const searchContact = ( req,res,next ) => {
       })
     } else {
       res.json({
-        code: CODE_ERROR,
+        code: CODE_SUCCESS,
         msg: '查无此人',
         data: null
       })
     }
 
+  })
+}
+//
+const isFriend = (req,res,next) => {
+  let { userid,searchid } = req.body
+  console.log(userid);
+  query = `select * from friend where user1id=${userid} and user2id=${searchid}`
+  querySql(query).then(data => {
+    if(data.length != 0){
+      res.json({
+        code: CODE_SUCCESS,
+        msg: null,
+        data: 1
+      })
+    } else {
+      res.json({
+        code: CODE_SUCCESS,
+        msg: null,
+        data: 0
+      })
+    }
   })
 }
 
@@ -49,5 +71,6 @@ const findUser = (username) => {
 
 module.exports = {
   getContact,
-  searchContact
+  searchContact,
+  isFriend
 }

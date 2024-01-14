@@ -12,11 +12,16 @@ export const useUserStore = defineStore(
     const setUser = (obj) => {
       user.value = obj
     }
+    const reset = () => {
+      token.value = '',
+      user.value = {}
+    }
     return {
       token,
       user,
       setToken,
       setUser,
+      reset
     }
   },
   {
